@@ -1,28 +1,32 @@
-import EditTripView from '../view/edit-trip-view.js';
-import EventTripView from '../view/filter-trip-view.js';
-import FormTripView from '../view/form-trip-view.js';
-import SortTripView from '../view/sort-trip-view.js';
 import TripListView from '../view/trip-list-view.js';
+import EventTripView from '../view/filter-trip-view.js';
+import SortTripView from '../view/sort-trip-view.js';
+import FilterTripView from '../view/filter-trip-view.js';
+import FormTripView from '../view/form-trip-view.js';
+import MenuTripView from '../view/menu-trip-view.js';
 import { render } from '../render.js';
 
 export default class BoardPresenter {
-    constructor() {
-        this.tripEventsList = new TripListView();
+  constructor(eventsElement, controlsElement) {
+    this.eventsContainer = eventsElement;
+    this.controlsContainer = controlsElement;
+  }
+
+  init (pointsModel) {
+    this.pointsModel = pointsModel;
+    this.boardPointsModel = [...this.pointsModel.getPoints()];
+
+    render(new MenuTripView(), this.controlsContainer);
+    render(new FilterTripView(), this.controlsContainer);
+
+    render(new SortTripView(), this.eventsContainer);
+    render(new TripListView(), this.eventsContainer);
+
+    const eventsList = this.eventsContainer.querySelector('.trip-events__list');
+    render(new FormTripView(this.boardPointsModel[0]), eventsList);
+
+    for (let i = 0; i < this.boardPointsModel.length; i++) {
+      render(new EventTripView(this.boardPointsModel[i]), eventsList);
     }
-
-    init (boardContainer) {
-        this.boardContainer = boardContainer;
-
-        render(new SortTripView(), this.boardContainer);
-        render(this.tripEventsList, this.boardContainer);
-        render(new FormTripView(), this.tripEventsList.getElement());
-
-        for (let i = 0; i < 3; i++) {
-            render(new EventTripView(), this.tripEventsList.getElement());
-        }
-
-        render(new EditTripView(), this.tripEventsList.getElement());
-
-
-    }
+  }
 }

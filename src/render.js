@@ -1,9 +1,9 @@
 const RenderPosition = {
-    BEFOREBEGIN: 'beforebegin',
-    AFTERBEGIN: 'afterbegin',
-    BEFOREEND: 'beforeend',
-    AFTEREND: 'afterend',
-};
+    BEFOREBEGIN: 'beforeBegin',
+    AFTERBEGIN: 'afterBegin',
+    BEFOREEND: 'beforeEnd',
+    AFTEREND: 'afterEnd',
+  };
   
 const createElement = (template) => {
     const newElement = document.createElement('div');
@@ -13,7 +13,22 @@ const createElement = (template) => {
 };
   
 const render = (component, container, place = RenderPosition.BEFOREEND) => {
-    container.insertAdjacentElement(place, component.getElement());
+    const element = component.getElement();
+  
+    switch (place) {
+      case RenderPosition.BEFOREBEGIN:
+        container.before(element);
+        break;
+      case RenderPosition.AFTERBEGIN:
+        container.prepend(element);
+        break;
+      case RenderPosition.BEFOREEND:
+        container.append(element);
+        break;
+      case RenderPosition.AFTEREND:
+        container.after(element);
+        break;
+    }
 };
   
-export { RenderPosition, createElement, render };
+export { createElement, render };
