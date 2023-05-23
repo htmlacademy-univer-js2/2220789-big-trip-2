@@ -4,6 +4,7 @@ import SortTripView from '../view/sort-trip-view.js';
 import FilterTripView from '../view/filter-trip-view.js';
 import FormTripView from '../view/form-trip-view.js';
 import MenuTripView from '../view/menu-trip-view.js';
+import NoPointView from '../view/no-point-view.js';
 import { render } from '../render.js';
 
 export default class BoardPresenter {
@@ -22,14 +23,18 @@ export default class BoardPresenter {
     this.#pointModel = pointModel;
     this.#boardPointModel = [...this.#pointModel.points];
 
-    render(new MenuTripView(), this.#controlsContainer);
-    render(new FilterTripView(), this.#controlsContainer);
+    if (this.#boardPointModel.length === 0) {
+      render(new NoPointView(), this.#eventsContainer);
+    }
+    else {
+      render(new MenuTripView(), this.#controlsContainer);
+      render(new FilterTripView(), this.#controlsContainer);
+      render(new SortTripView(), this.#eventsContainer);
+      render(this.#pointComponent, this.#eventsContainer);
 
-    render(new SortTripView(), this.#eventsContainer);
-    render(this.#pointComponent, this.#eventsContainer);
-
-    for (const point of this.#boardPointModel) {
-      this.#renderPoint(point);
+      for (const point of this.#boardPointModel) {
+        this.#renderPoint(point);
+      }
     }
   }
 
