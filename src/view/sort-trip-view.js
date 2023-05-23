@@ -28,19 +28,21 @@ const createSortTripTemplate = () => `<form class="trip-events__trip-sort  trip-
 </form>`;
 
 export default class SortTripView {
-    getTemplate() {
-        return createSortTripTemplate();
+  #element = null;
+
+  get template() {
+    return createSortTripTemplate();
+  }
+
+  getElement() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    getElement() {
-        if (!this.element) {
-            this.element = createElement(this.getTemplate());
-        }
+    return this.#element;
+  }
 
-        return this.element;
-    }
-
-    removeElement() {
-        this.element = null;
-    }
+  removeElement() {
+    this.#element = null;
+  }
 }

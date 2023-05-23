@@ -6,19 +6,21 @@ const createMenuTripTemplate = () => `<nav class="trip-controls__trip-tabs  trip
 </nav>`;
 
 export default class MenuTripView {
-  getTemplate () {
+  #element = null;
+
+  get template () {
     return createMenuTripTemplate();
   }
 
-  getElement() {
-    if (!this.element){
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element){
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
