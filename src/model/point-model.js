@@ -1,7 +1,15 @@
-import { createPoint } from "../mock/point";
-
 export default class PointsModel {
-  points = Array.from({length: 5}, createPoint);
+  #points = null;
 
-  getPoints = () => this.points;
+  constructor() {
+    this.#points = [];
+  }
+
+  init(points) {
+    this.#points = points;
+  }
+
+  get points() {
+    return this.#points;
+  }
 }
