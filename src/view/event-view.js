@@ -1,6 +1,6 @@
 import {
   convertEventDateIntoDay, convertEventDateIntoHour,
-  subtractDates, isFavoriteOption, capitalizeFirstLetter
+  getEventDuration, isFavoriteOption, capitalize
 } from '../utils.js';
 import AbstractView from '../framework/view/abstract-view';
 
@@ -29,14 +29,14 @@ const createEventTemplate = ({ basePrice, destination, startDate, endDate, isFav
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
     </div>
-    <h3 class="event__title">${capitalizeFirstLetter(type)} ${name}</h3>
+    <h3 class="event__title">${capitalize(type)} ${name}</h3>
     <div class="event__schedule">
       <p class="event__time">
         <time class="event__start-time" datetime="${convertEventDateIntoHour(startDate)}">${convertEventDateIntoHour(startDate)}</time>
         &mdash;
         <time class="event__end-time" datetime="${convertEventDateIntoHour(endDate)}">${convertEventDateIntoHour(endDate)}</time>
       </p>
-      <p class="event__duration">${subtractDates(startDate, endDate)}</p>
+      <p class="event__duration">${getEventDuration(startDate, endDate)}</p>
     </div>
       &euro;&nbsp;<span class="event__price">${basePrice}</span>
     </p>

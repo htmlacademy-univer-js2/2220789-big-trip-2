@@ -3,35 +3,28 @@ import duration from 'dayjs/plugin/duration';
 import { FILTER_TYPES, TIME } from './const';
 
 dayjs.extend(duration);
-
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
 const convertEventDateIntoDay = (date) => dayjs(date).format('MMM D');
 const convertEventDateIntoHour = (date) => dayjs(date).format('HH:mm');
 const convertEventDateForEditForm = (date) => dayjs(date).format('DD/MM/YY HH:mm');
-const subtractDates = (dateFrom, dateTo) => {
-  const diffInTotalMinutes = Math.ceil(dayjs(dateTo).diff(dayjs(dateFrom), 'minute', true));
-  const diffInHours = Math.floor(diffInTotalMinutes / TIME.MINUTES) % TIME.HOURS;
-  const diffInDays = Math.floor(diffInTotalMinutes / (TIME.MINUTES * TIME.HOURS));
+const getEventDuration = (dateFrom, dateTo) => {
+  const minutes = Math.ceil(dayjs(dateTo).diff(dayjs(dateFrom), 'minute', true));
+  const hours = Math.floor(minutes / TIME.MINUTES) % TIME.HOURS;
+  const days = Math.floor(minutes / (TIME.MINUTES * TIME.HOURS));
 
-  if ((diffInDays === 0) && (diffInHours === 0)) {
-    return dayjs.duration(diffInTotalMinutes, 'minutes').format('mm[M]');
-  } else if (diffInDays === 0) {
-    return dayjs.duration(diffInTotalMinutes, 'minutes').format('HH[H] mm[M]');
+  if ((days === 0) && (hours === 0)) {
+    return dayjs.duration(minutes, 'minutes').format('mm[M]');
   }
-  return dayjs.duration(diffInTotalMinutes, 'minutes').format('DD[D] HH[H] mm[M]');
+  if (days === 0) {
+    return dayjs.duration(minutes, 'minutes').format('HH[H] mm[M]');
+  }
+  return dayjs.duration(minutes, 'minutes').format('DD[D] HH[H] mm[M]');
 };
 
 const checkDatesRelativeToCurrent = (dateFrom, dateTo) => dayjs(dateFrom).isBefore(dayjs()) && dayjs(dateTo).isAfter(dayjs());
 const isEventPlanned = (dateFrom, dateTo) => dayjs(dateFrom).isAfter(dayjs()) || checkDatesRelativeToCurrent(dateFrom, dateTo);
 const isEventPassed = (dateFrom, dateTo) => dayjs(dateTo).isBefore(dayjs()) || checkDatesRelativeToCurrent(dateFrom, dateTo);
 const isFavoriteOption = (isFavorite) => (isFavorite) ? 'event__favorite-btn--active' : '';
-const capitalizeFirstLetter = (str) => str[0].toUpperCase() + str.slice(1);
+const capitalize = (str) => str[0].toUpperCase() + str.slice(1);
 const isSubmitDisabledByDate = (dateTo, dateFrom) => dayjs(dateTo).diff(dayjs(dateFrom)) <= 0;
 const isSubmitDisabledByPrice = (price) => Number(price) > 0 && Number.isInteger(Number(price));
 const isSubmitDisabledByDestinationName = (name, allDestinations) => {
@@ -54,18 +47,17 @@ const sortByDuration = (a, b) => {
 const sortByDate = (a, b) => dayjs(a.startDate) - dayjs(b.startDate);
 
 export {
-  getRandomInteger,
   convertEventDateIntoDay,
   convertEventDateIntoHour,
   convertEventDateForEditForm,
-  subtractDates,
+  getEventDuration,
   isEventPlanned,
   isEventPassed,
   isSubmitDisabledByDate,
   isSubmitDisabledByPrice,
   isSubmitDisabledByDestinationName,
   isFavoriteOption,
-  capitalizeFirstLetter,
+  capitalize,
   filter,
   sortByPrice,
   sortByDuration,
