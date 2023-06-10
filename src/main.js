@@ -6,7 +6,7 @@ import TripInfoPresenter from './presenter/info-presenter';
 import NewEventButtonView from './view/new-event-btn-view';
 import FilterPresenter from './presenter/filter-presenter';
 import FilterModel from './model/filter-model';
-import EventsApiService from './events-api-service';
+import EventsService from './services/events-service';
 
 const headerElement = document.querySelector('.page-header');
 const mainElement = document.querySelector('.page-main');
@@ -16,7 +16,7 @@ const filtersElement = headerElement.querySelector('.trip-controls__filters');
 const contentElement = mainElement.querySelector('.trip-events');
 
 const filterModel = new FilterModel();
-const eventsModel = new EventsModel(new EventsApiService());
+const eventsModel = new EventsModel(new EventsService());
 const tripInfoPresenter = new TripInfoPresenter(tripMainElement, eventsModel);
 const rootPresenter = new RootPresenter(contentElement, eventsModel, filterModel);
 const filterPresenter = new FilterPresenter(filtersElement, filterModel, eventsModel);

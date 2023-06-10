@@ -1,7 +1,8 @@
-import ApiService from './framework/api-service.js';
+import ApiService from '../framework/api-service.js';
+
 
 const END_POINT = 'https://18.ecmascript.pages.academy/big-trip';
-const AUTHORIZATION = 'Basic luqpNwDFACZaGlr4';
+const AUTHORIZATION = 'Basic by2t8unK3gCMhlK';
 const METHOD = {
   GET: 'GET',
   PUT: 'PUT',
@@ -9,24 +10,25 @@ const METHOD = {
   DELETE: 'DELETE'
 };
 
-export default class EventsApiService extends ApiService {
+export default class EventsService extends ApiService {
+
   constructor() {
     super(END_POINT, AUTHORIZATION);
   }
 
   get events() {
     return this._load({ url: 'points' })
-      .then(ApiService.parseResponse);
+      .then(EventsService.parseResponse);
   }
 
   get offers() {
     return this._load({ url: 'offers' })
-      .then(ApiService.parseResponse);
+      .then(EventsService.parseResponse);
   }
 
   get destinations() {
     return this._load({ url: 'destinations' })
-      .then(ApiService.parseResponse);
+      .then(EventsService.parseResponse);
   }
 
   updateEvent = async (event) => {
@@ -37,7 +39,9 @@ export default class EventsApiService extends ApiService {
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
-    return await ApiService.parseResponse(response);
+    const parsed = await EventsService.parseResponse(response);
+
+    return parsed;
   };
 
   addEvent = async (event) => {
@@ -47,14 +51,16 @@ export default class EventsApiService extends ApiService {
       body: JSON.stringify(this.#adaptToServer(event)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
-    return await ApiService.parseResponse(response);
+    return await EventsService.parseResponse(response);
   };
 
-  deleteEvent = async (event) => await this._load(
-    {
+  deleteEvent = async (event) => {
+    const response = await this._load({
       url: `points/${event.id}`,
       method: METHOD.DELETE,
     });
+    return response;
+  };
 
   #adaptToServer = (event) => {
 
