@@ -30,8 +30,7 @@ const subtractDates = (dateFrom, dateTo) => {
 
   if ((diffInDays === 0) && (diffInHours === 0)) {
     return dayjs.duration(diffInTotalMinutes, 'minutes').format('mm[M]');
-  }
-  if (diffInDays === 0) {
+  } else if (diffInDays === 0) {
     return dayjs.duration(diffInTotalMinutes, 'minutes').format('HH[H] mm[M]');
   }
   return dayjs.duration(diffInTotalMinutes, 'minutes').format('DD[D] HH[H] mm[M]');
@@ -49,13 +48,7 @@ const filter = {
   [FILTER_TYPES.PAST]: (events) => events.filter((event) => isEventPassed(event.startDate, event.endDate))
 };
 
-const update = (items, updatedItem) =>
-  items.map((item) => {
-    if (item.id === updatedItem.id) {
-      return updatedItem;
-    }
-    return item;
-  });
+const update = (items, updatedItem) => items.map((item) => item.id === updatedItem.id ? updatedItem : item);
 
 const sortByPrice = (a, b) => b.basePrice - a.basePrice;
 const sortByDuration = (a, b) => {
