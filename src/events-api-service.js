@@ -5,6 +5,8 @@ const AUTHORIZATION = 'Basic luqpNwDFACZaGlr4';
 const METHOD = {
   GET: 'GET',
   PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE'
 };
 
 export default class EventsApiService extends ApiService {
@@ -27,7 +29,7 @@ export default class EventsApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
 
-  updatePoint = async (event) => {
+  updateEvent = async (event) => {
     const response = await this._load({
       url: `points/${event.id}`,
       method: METHOD.PUT,
@@ -35,10 +37,24 @@ export default class EventsApiService extends ApiService {
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
-    const parsed = await ApiService.parseResponse(response);
-
-    return parsed;
+    return await ApiService.parseResponse(response);
   };
+
+  addEvent = async (event) => {
+    const response = await this._load({
+      url: 'points',
+      method: METHOD.POST,
+      body: JSON.stringify(this.#adaptToServer(event)),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+    });
+    return await ApiService.parseResponse(response);
+  };
+
+  deleteEvent = async (event) => await this._load(
+    {
+      url: `points/${event.id}`,
+      method: METHOD.DELETE,
+    });
 
   #adaptToServer = (event) => {
 
