@@ -1,5 +1,6 @@
+import { nanoid } from 'nanoid';
 import { getRandomInteger, generateDates } from '../utils';
-import { TYPES, DESTINATIONS, PRICE } from './const';
+import { TYPES, DESTINATIONS, PRICE } from '../const';
 import { OFFERS } from './offers';
 
 const generateType = () => TYPES[getRandomInteger(0, TYPES.length - 1)];
@@ -7,7 +8,7 @@ const generateType = () => TYPES[getRandomInteger(0, TYPES.length - 1)];
 const generateEvent = () => {
   const { startDate, endDate } = generateDates();
   return {
-    id: getRandomInteger(0, PRICE.MAX) + getRandomInteger(0, PRICE.MAX),
+    id: nanoid(),
     basePrice: getRandomInteger(PRICE.MIN, PRICE.MAX),
     startDate,
     endDate,
