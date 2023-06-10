@@ -7,6 +7,7 @@ const generateType = () => TYPES[getRandomInteger(0, TYPES.length - 1)];
 const generateEvent = () => {
   const { startDate, endDate } = generateDates();
   return {
+    id: getRandomInteger(0, PRICE.MAX) + getRandomInteger(0, PRICE.MAX),
     basePrice: getRandomInteger(PRICE.MIN, PRICE.MAX),
     startDate,
     endDate,
